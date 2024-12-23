@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../utils/api';
+import { useRouter } from 'next/navigation';
 
 interface Product {
   id: string;
@@ -10,10 +11,15 @@ interface Product {
 
 export function useProducts(tenantName: string) {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const getProducts = useQuery({
     queryKey: ['products', tenantName],
-    queryFn: () => api.get(`/${tenantName}/products`).then((res) => res.data),
+    queryFn: () => api.get(`/${tenantName}/products`).then((res) => res.data.responseObject.data),
+    retry: (failureCount, error: any) => {
+      if (error.response?.status === 404) router.push('/');
+      return failureCount < 3;
+    }
   });
 
   const getProduct = (id: string) => useQuery({
@@ -37,4 +43,3 @@ export function useProducts(tenantName: string) {
 
   return { getProducts, getProduct, createProduct, updateProduct };
 }
-
