@@ -37,11 +37,8 @@ export function useAuth() {
   const register = useMutation({
     mutationFn: (data: AuthData) => api.post('/auth/register', data),
     onSuccess: (response) => {
-      const newToken = response.data.responseObject.accessToken;
       const newTenantName = response.data.responseObject.tenantName;
-      setToken(newToken);
       setTenantName(newTenantName);
-      localStorage.setItem('token', newToken);
       localStorage.setItem('tenantName', newTenantName);
       queryClient.invalidateQueries({ queryKey: ['user'] });
       router.push(`/${newTenantName}`);
