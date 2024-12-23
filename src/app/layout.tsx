@@ -5,8 +5,8 @@ import QueryProvider from '../providers/QueryProvider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-    title: 'Your App Name',
-    description: 'Your app description',
+    title: 'E-commerce Multitenancy App',
+    description: 'E-commerce Multitenancy App',
 }
 
 export default function RootLayout({
