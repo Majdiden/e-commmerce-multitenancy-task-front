@@ -14,11 +14,6 @@ export function AppContent() {
     const { token, tenantName, logout } = useAuth();
     const [showAddProduct, setShowAddProduct] = useState(false);
     const router = useRouter();
-    const [pathName, setPathName] = useState("");
-
-    useEffect(() => {
-        setPathName(window.location.pathname);
-    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -30,12 +25,12 @@ export function AppContent() {
                     {token ? (
                         <Button onClick={logout}>Logout</Button>
                     ) : (
-                        pathName !== '/' && <Button onClick={() => router.push('/')}>Login</Button>
+                        tenantName && <Button onClick={() => router.push('/')}>Login</Button>
                     )}
                 </div>
             </header>
             <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                {!tenantName ? (
+                {!tenantName || !token ? (
                     <div className="flex justify-center space-x-4">
                         <Register />
                         <Login />
