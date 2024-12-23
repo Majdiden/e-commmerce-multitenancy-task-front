@@ -14,12 +14,11 @@ export function AppContent() {
     const { token, tenantName, logout } = useAuth();
     const [showAddProduct, setShowAddProduct] = useState(false);
     const router = useRouter();
+    const [pathName, setPathName] = useState("");
 
-    // useEffect(() => {
-    //     if (tenantName === null) {
-    //         router.push('/');
-    //     }
-    // }, [tenantName]);
+    useEffect(() => {
+        setPathName(window.location.pathname);
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -31,7 +30,7 @@ export function AppContent() {
                     {token ? (
                         <Button onClick={logout}>Logout</Button>
                     ) : (
-                        window.location.pathname !== '/' && <Button onClick={() => router.push('/')}>Login</Button>
+                        pathName !== '/' && <Button onClick={() => router.push('/')}>Login</Button>
                     )}
                 </div>
             </header>
