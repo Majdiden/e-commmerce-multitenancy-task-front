@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from 'react';
 import { useProducts } from '../hooks/useProducts';
 import { Button } from "@/components/ui/button"
@@ -5,7 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
+import { useAuth } from '../hooks/useAuth';
 
 interface ProductFormProps {
   product?: {
@@ -13,13 +16,15 @@ interface ProductFormProps {
     name: string;
     price: number;
     description: string;
+    stock: number;
   };
 }
 
 export function ProductForm({ product }: ProductFormProps) {
-  const { tenantName } = useParams<{ tenantName: string }>();
+  const { tenantName } = useAuth();
   const [name, setName] = useState(product?.name || '');
-  const [price, setPrice] = useState(product?.price.toString() || '');
+  const [price, setPrice] = useState(product?.price?.toString() || '0');
+  const [stock, setStock] = useState(product?.stock?.toString() || '0');
   const [description, setDescription] = useState(product?.description || '');
 
   const { createProduct, updateProduct } = useProducts(tenantName || '');
@@ -30,6 +35,7 @@ export function ProductForm({ product }: ProductFormProps) {
       name,
       price: parseFloat(price),
       description,
+      stock: parseInt(stock),
     };
 
     if (product) {
@@ -75,6 +81,16 @@ export function ProductForm({ product }: ProductFormProps) {
               required
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="stock">Stock</Label>
+            <Input
+              id="stock"
+              type="number"
+              value={stock}
+              onChange={(e) => setStock(e.target.value)}
+              required
+            />
+          </div>
           <Button type="submit" className="w-full">
             {product ? 'Update Product' : 'Add Product'}
           </Button>
@@ -83,4 +99,3 @@ export function ProductForm({ product }: ProductFormProps) {
     </Card>
   );
 }
-

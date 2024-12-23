@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
+import { useRouter } from 'next/navigation';
 export function Register() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [storeName, setStoreName] = useState('');
@@ -14,7 +15,10 @@ export function Register() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    register.mutate({ name, email, password, storeName });
+    register.mutate({ name, email, password });
+    if (register.isSuccess) {
+      router.push(`/${storeName}`);
+    }
   };
 
   return (
@@ -24,8 +28,8 @@ export function Register() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-2">
-            <Label htmlFor="email">Name</Label>
+          <div className="space-y-2">
+            <Label htmlFor="email">Store Name</Label>
             <Input
               id="nsmr"
               type="text"
@@ -54,16 +58,6 @@ export function Register() {
               required
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="storeName">Store Name</Label>
-            <Input
-              id="storeName"
-              type="text"
-              value={storeName}
-              onChange={(e) => setStoreName(e.target.value)}
-              required
-            />
-          </div>
           <Button type="submit" className="w-full">
             Register
           </Button>
@@ -72,4 +66,3 @@ export function Register() {
     </Card>
   );
 }
-

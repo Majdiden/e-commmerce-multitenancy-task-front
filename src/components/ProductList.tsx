@@ -1,15 +1,30 @@
+"use client"
+
 import { useProducts } from '../hooks/useProducts';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { useParams } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function ProductList() {
-  const { tenantName } = useParams<{ tenantName: string }>();
+  const router = useRouter();
+  interface Product {
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    stock: number;
+  }
+  const { tenantName, setTenantName } = useAuth();
   const { getProducts } = useProducts(tenantName || '');
   const { data: products, isLoading, error } = getProducts;
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading products</div>;
+  // if (tenantName === null) {
+  //   router.push('/');
+  // }
+  if (products.length === 0) return <div>No products found</div>;
 
   return (
     <div className="container mx-auto py-6">
@@ -18,20 +33,18 @@ export function ProductList() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead>Price</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Stock</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products && products.map((product) => (
+          {products && products.map((product: Product) => (
             <TableRow key={product.id}>
               <TableCell>{product.name}</TableCell>
-              <TableCell>${product.price.toFixed(2)}</TableCell>
               <TableCell>{product.description}</TableCell>
-              <TableCell>
-                <Button variant="outline" size="sm">Edit</Button>
-              </TableCell>
+              <TableCell>${product.price.toFixed(2)}</TableCell>
+              <TableCell>{product.stock}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -39,4 +52,3 @@ export function ProductList() {
     </div>
   );
 }
-
