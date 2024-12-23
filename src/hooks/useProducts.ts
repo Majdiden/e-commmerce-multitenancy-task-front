@@ -22,10 +22,10 @@ export function useProducts(tenantName: string) {
     }
   });
 
-  const getProduct = (id: string) => useQuery({
-    queryKey: ['products', tenantName, id],
-    queryFn: () => api.get(`/${tenantName}/products/${id}`).then((res) => res.data),
-  });
+  // const getProduct = (id: string) => useQuery({
+  //   queryKey: ['products', tenantName, id],
+  //   queryFn: () => api.get(`/${tenantName}/products/${id}`).then((res) => res.data),
+  // });
 
   const createProduct = useMutation({
     mutationFn: (newProduct: Omit<Product, 'id'>) => api.post(`/${tenantName}/products`, newProduct),
@@ -41,5 +41,5 @@ export function useProducts(tenantName: string) {
     },
   });
 
-  return { getProducts, getProduct, createProduct, updateProduct };
+  return { getProducts, createProduct, updateProduct };
 }
