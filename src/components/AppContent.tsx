@@ -27,7 +27,7 @@ export function AppContent() {
                     <h1 className="text-3xl font-bold text-gray-900">
                         {tenantName ? `${tenantName}` : 'E-commerce Multitenancy App'}
                     </h1>
-                    {token ? (
+                    {token !== undefined ? (
                         <Button onClick={logout}>Logout</Button>
                     ) : (
                         pathName !== '/' && <Button onClick={() => router.push('/')}>Login</Button>
@@ -42,7 +42,7 @@ export function AppContent() {
                     </div>
                 ) : (
                     <div>
-                        {token && <div className="mb-4 flex justify-between items-center">
+                        {token !== undefined && <div className="mb-4 flex justify-between items-center">
                             <Button onClick={() => setShowAddProduct(!showAddProduct)}>
                                 {showAddProduct ? 'Hide Add Product' : 'Add Product'}
                             </Button>
