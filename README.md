@@ -1,40 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# E-commerce Multi-tenancy Prototype
+
+Preview the app here: [https://e-commerce-multitenancy-front.vercel.app/](https://e-commerce-multitenancy-front.vercel.app/)
+
+## Architecture Overview
+
+The application implements a multi-tenant system where each store (tenant) operates in isolation with its own:
+- User authentication and authorization
+- Product management system
+- Dedicated URL routing (`/{tenantName}`)
+
+## Core Features
+
+### Multi-tenant Authentication
+
+The authentication system (`useAuth.ts`) manages tenant-specific user sessions:
+
+- Store registration with unique tenant names
+- Tenant-specific login system
+- JWT token management with localStorage persistence
+- Automatic routing to tenant-specific pages
+- Token-based API request authorization
+
+### Product Management
+
+Each tenant can manage their product inventory through:
+
+- Product creation with name, price, description, and stock information
+- Product listing with tenant-specific views
+- Product updates and modifications
+- Automatic validation and error handling
+
+### Routing System
+
+The application implements a dynamic routing system:
+
+- Root route (`/`) for store registration
+- Tenant-specific routes (`/{tenantName}`) for store operations
+- Protected routes with authentication checks
+- Automatic redirects based on authentication state
+
+## Component Structure
+
+### Core Components
+
+1. **AppContent**: Main application shell with:
+   - Header with tenant name display
+   - Authentication state management
+   - Product management interface
+
+2. **Authentication Components**:
+   - `Register`: Store creation interface
+   - `Login`: Tenant-specific login form
+   - Both using shadcn/ui components for consistent styling
+
+3. **Product Components**:
+   - `ProductList`: Displays tenant-specific products in a table
+   - `ProductForm`: Handles product creation and updates
+
+### Custom Hooks
+
+1. **useAuth**:
+   - Manages authentication state
+   - Handles tenant identification
+   - Provides login/logout functionality
+   - Manages JWT tokens
+
+2. **useProducts**:
+   - Manages product-related operations
+   - Implements React Query for data fetching
+   - Handles error states and loading states
+
+## State Management
+
+The application uses React Query for server state management:
+
+- Automatic cache invalidation
+- Optimistic updates
+- Error handling
+- Loading states
+- Data synchronization
+
+
+## API Integration
+
+The API integration is handled through:
+
+- Axios instance with base URL configuration
+- Automatic token injection for authenticated requests
+- Tenant-specific endpoint handling
+- Error handling and response transformation
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+3. Set up environment variables:
+   ```env
+   NEXT_PUBLIC_API_URL=your-api-url
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
