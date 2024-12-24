@@ -4,7 +4,7 @@ import api from '../utils/api';
 import { useState, useEffect } from 'react';
 
 interface AuthData {
-  name: string,
+  name: string | string[] | undefined,
   email: string;
   password: string;
 }
@@ -68,7 +68,7 @@ export function useAuth() {
     localStorage.removeItem('token');
     localStorage.removeItem('tenantName');
     queryClient.clear();
-    router.push('/');
+    router.push(`/${tenantName}`);
   };
 
   return { token, tenantName, setTenantName, register, login, logout };

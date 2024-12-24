@@ -25,27 +25,24 @@ export function AppContent() {
                     {token !== "undefined" ? (
                         <Button onClick={logout}>Logout</Button>
                     ) : (
-                        tenantName && <Button onClick={() => router.push('/')}>Login</Button>
+                        tenantName && <div className="flex flex-column">
+
+                            <Button onClick={() => router.push(`${tenantName}/login`)}>Login</Button>
+                            <Button onClick={() => router.push(`/`)}>Register</Button>
+                        </div>
                     )}
                 </div>
             </header>
             <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                {!token || token === "undefined" ? (
-                    <div className="flex justify-center space-x-4">
-                        <Register />
-                        <Login />
-                    </div>
-                ) : (
-                    <div>
-                        {token !== "undefined" && <div className="mb-4 flex justify-between items-center">
-                            <Button onClick={() => setShowAddProduct(!showAddProduct)}>
-                                {showAddProduct ? 'Hide Add Product' : 'Add Product'}
-                            </Button>
-                        </div>}
-                        {showAddProduct && <ProductForm />}
-                        <ProductList />
-                    </div>
-                )}
+                <div>
+                    {token !== "undefined" && <div className="mb-4 flex justify-between items-center">
+                        <Button onClick={() => setShowAddProduct(!showAddProduct)}>
+                            {showAddProduct ? 'Hide Add Product' : 'Add Product'}
+                        </Button>
+                    </div>}
+                    {showAddProduct && <ProductForm />}
+                    <ProductList />
+                </div>
             </main>
         </div>
     );
